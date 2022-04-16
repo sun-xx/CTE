@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="touhou_engine" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="QuadTree/" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/touhou_engine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-std=c++17" />
+					<Add directory="D:/SDL2.0/SDL2-devel-2.0.20-mingw/SDL2-2.0.20/x86_64-w64-mingw32/include" />
+					<Add directory="D:/SDL2.0/SDL2_image-devel-2.0.5-mingw/SDL2_image-2.0.5/x86_64-w64-mingw32/include" />
+					<Add directory="D:/SDL2.0/SDL2_mixer-devel-2.0.4-mingw/SDL2_mixer-2.0.4/x86_64-w64-mingw32/include" />
+					<Add directory="D:/SDL2.0/SDL2-devel-2.0.20-mingw/SDL2-2.0.20/x86_64-w64-mingw32/include/SDL2" />
+					<Add directory="D:/SDL-project/touhou_engine" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2_image -lSDL2_mixer" />
+					<Add directory="D:/SDL2.0/SDL2_image-devel-2.0.5-mingw/SDL2_image-2.0.5/x86_64-w64-mingw32/lib" />
+					<Add directory="D:/SDL2.0/SDL2_mixer-devel-2.0.4-mingw/SDL2_mixer-2.0.4/x86_64-w64-mingw32/lib" />
+					<Add directory="D:/SDL2.0/SDL2-devel-2.0.20-mingw/SDL2-2.0.20/x86_64-w64-mingw32/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/touhou_engine" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="D:/SDL2.0/SDL2-devel-2.0.20-mingw/SDL2-2.0.20/x86_64-w64-mingw32/include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDL2main" />
+			<Add library="SDL2.dll" />
+			<Add library="user32" />
+			<Add library="gdi32" />
+			<Add library="winmm" />
+			<Add library="dxguid" />
+			<Add directory="D:/SDL2.0/SDL2-devel-2.0.20-mingw/SDL2-2.0.20/x86_64-w64-mingw32/lib" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="XCOPY $(#sdl2)\bin\*.dll $(TARGET_OUTPUT_DIR) /D /Y" />
+		</ExtraCommands>
+		<Unit filename="Qcalc/Qcalc.hpp" />
+		<Unit filename="QuadTree/QuadTree.hpp" />
+		<Unit filename="main.cpp" />
+		<Unit filename="menu/menu.cpp" />
+		<Unit filename="menu/menu.hpp" />
+		<Unit filename="sdl_render/sdl_render.cpp" />
+		<Unit filename="sdl_render/sdl_render.hpp" />
+		<Unit filename="tests/collision_test.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="tests/sdl_render_test.cpp">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="touhou.hpp" />
+		<Unit filename="touhou/entity.hpp" />
+		<Unit filename="touhou/item.hpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
