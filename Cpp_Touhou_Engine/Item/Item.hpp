@@ -7,8 +7,9 @@ class Bullet{
 /* 单个子弹的类 包括了子弹的常规演出和通性 */
 protected: //访问限制的各种基本属性 
 	//---------------Variables---------------//
-	Texture picture; //贴图
-	int width,height; //外接矩形大小 
+	vector<Texture> pictures; //贴图
+	Texture picture; //当前贴图 
+	int width,height; //大小 
 	
 	float x,y; //位置坐标
 	float temp_x,temp_y; //坐标缓存
@@ -27,14 +28,15 @@ protected: //访问限制的各种基本属性
 	virtual void show(); //显示 提供一般实现 可自定义 
 	
 	//以下为常规检测 
-	bool hit_player(float player_tx,float player_ty,float player_x,float player_y,float player_r);
-	//上为判断一帧内是否碰撞自机 注意传入顺序为先传上一帧自机坐标 再传这一帧自机坐标 
+	bool hit_player(float player_tx,float player_ty,float player_x,float player_y,float player_r,
+	float player_velocity);
+	//上为判断一帧内是否碰撞自机
 	bool out_of_screen(int screen_xl,int screen_xr,int screen_yt,int screen_yb);
 	//上为判断是否出屏 注意传入顺序为屏幕左侧x坐标-右侧x坐标-上方y坐标-下方y坐标
 	//More methods to be coded... 
 		
 public: //允许调用的子弹类方法
-	Bullet(Texture pic,int w,int h,float init_x,float init_y,float r_);
+	Bullet(vector<Texture> pic,int w,int h,float init_x,float init_y,float r_);
 	//构造函数，参数为图片，宽，高，初始坐标，判定半径 
 	~Bullet(); //析构函数 
 	
@@ -54,6 +56,7 @@ protected: //未加注释同上
 	float velocity,a_velocity; //速度与加速度 
 	int flash; //存在帧数 
 	bool alive; //是否存活 
+	bool been_got; //被拾取 
 	
 	//---------------Functions---------------//
 	bool near_player(float player_x,float player_y,float min_distance); //是否接近自机 
