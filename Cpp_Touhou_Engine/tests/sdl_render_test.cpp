@@ -1,17 +1,42 @@
 
-/*
-#include "sdl_render/sdl_render.hpp"
+#include "../sdl_render/sdl_render.hpp"
 #include<bits/stdc++.h>
-//#include "touhou/item.hpp"
 using namespace std;
 bool isquit=0;
-function<void()> quit;
-void quit_()
+function<void(SDL_Event)> quit;
+function<void(SDL_Event)> playeffect;
+function<void(SDL_Event)> mycall;
+function<void(std::any)> after_call;
+TexPool tpool;
+ Mixer mx;
+ MusPool mpool;
+void quit_(SDL_Event event)
 {
     isquit=1;
+    mx.quit();
 }
-vector<SDL_Texture*> texs;
-vector<string> pics;
+//Mixer mx;
+void playeffect_(SDL_Event event)
+{
+    cerr<<event.key.keysym.sym<<endl;
+    switch(event.key.keysym.sym)
+    {
+    case SDLK_DOWN:
+        mx.play_sdeffect(mpool.get_sdeffect("biu"),0);
+        break;
+    }
+}
+void mycall_(SDL_Event event)
+{
+    //cerr<<"called"<<endl;
+}
+void after_call_(std::any param)
+{
+    cerr<<std::any_cast<int>(param);
+    cerr<<"after_called"<<endl;
+}
+
+
 int main(int argc,char* argv[])
 {
     if(!SDL_all_init())
@@ -22,58 +47,57 @@ int main(int argc,char* argv[])
 
     cout<<SDL_GetError()<<endl;
     quit=quit_;
+    playeffect=playeffect_;
+    mycall=mycall_;
+    after_call=after_call_;
 
-    pics.push_back("D:\\Touhou-project-fanmade-material\\touhou_fan_material\\th18_material\\bullet\\bullet4.png");
-
-    //SDL_ClearError();
     Windows wind("render_test",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,800,600,SDL_WINDOW_ALLOW_HIGHDPI|SDL_WINDOW_SHOWN);
-    //SDL_ClearError();
     Renderer render(wind.get_window(),SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
-    //wind.show();
-    //SDL_Renderer* render=SDL_CreateRenderer(wind.get_window(),-1,SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
-    //cout<<IMG_GetError();
-    //SDL_Delay(5000);
+
     Timer timer(60);
-    wind.add_event(SDL_QUIT,quit);
-    sdl_load_all_pics(pics,&texs,render.render());
+    wind.bind_event(SDL_QUIT,quit);
+    wind.bind_event(SDL_KEYDOWN,playeffect);
+    const Uint32 Touhou_engine_test=wind.register_event();
+    cerr<<"ID:"<<Touhou_engine_test;
+    wind.bind_event(Touhou_engine_test,mycall);
 
-    float x=0,y=0;
-    auto it=texs.begin();
-    Texture test(*it,render.render());
-    test.set_source(12,13,39,39);
-    test.set_zoom(0,0,39,39);
-    cerr<<"heya";
-    SDL_Rect sou;
-    sou.x=12;
-    sou.y=13;
-    sou.w=39;
-    sou.h=39;
-    SDL_FRect des;
-    des.x=x;
-    des.y=y;
-    des.w=39;
-    des.h=39;
 
-    //Texture t("D:\\Touhou-project-fanmade-material\\touhou_fan_material\\th18_material\\bullet\\bullet4.png",render.render());
+    ifstream rft("./tests/pics.json");
+    json texjs=json::parse(rft);
+    tpool.loadpic(texjs,render.render());
+    Texture tex(tpool.get_tex("test"),render.render());
+    tex.set_source(0,0,100,100);
+
+    ifstream rfm("./tests/music.json");
+    json musjs=json::parse(rfm);
+    mpool.loadmus(musjs);
+    mx.init(0,0);
+    mx.play_bgm(mpool.get_bgm("menu"),-1);
+    //cerr<<"Mpool_first:"<<*mpool.get_bgm("menu")<<endl;
+
+    Texture tex2(tpool.get_tex("test2"),render.render());
+    tex2.set_source(50,50,30,30);
+    tex2.set_zoom(20,20,200,200);
+
     while(!isquit)
     {
         render.clear();
         //wind.show();
-        //cout<<"wtf";
         timer.start_time();
         wind.Poll_event();
-        test.show(render.render());
-        x+=1;y+=1;
-        test.set_zoom(x,y,39,39);
-        //SDL_RenderCopyExF(render.render(),test.get_tex(),&sou,&des,0,NULL,SDL_FLIP_NONE);
-        cerr<<SDL_GetError()<<endl;
+        tex.show(render,2);
+        tex2.show(render,1);
+        //x+=1;y+=1;
+        tex.set_zoom(0,0,39,39);
+
         render.present();
+        wind.raise_event(Touhou_engine_test);
+        cerr<<"main"<<endl;
         timer.ctrlfps();
     }
-    //cout<<SDL_GetError();
-    //SDL_Delay(5000);
+
     SDL_all_quit();
+    cerr<<"cyka"<<endl;
     return 0;
 }
 
-*/

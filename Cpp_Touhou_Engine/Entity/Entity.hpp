@@ -35,11 +35,21 @@ public:
 	 
 };
 
+void Entity::move(){
+	this->x += Qcos(angle)*velocity;
+	this->y += Qsin(angle)*velocity;
+}
+
+void Entity::show(){
+	this->picture.rotate_show(window_renderer,this->x,this->y,angle); 
+	//window_render为全局变量，窗口 
+}
+
 
 class Enemy:public Entity{
 	/*杂鱼类*/
 protected:
-	bool hit_player(float player_tx,player_ty,float player_x,float player_y,
+	bool hit_player(float player_tx,float player_ty,float player_x,float player_y,
 					float player_r,float player_velocity);
 	//判断一帧内是否碰撞自机 传入参数：上一帧自机坐标 这一帧自机坐标 自机判定半径与速度
 	bool out_of_screen(int screen_xl,int screen_xr,int screen_yt,int screen_yb);
@@ -58,11 +68,15 @@ protected:
 	/*---------------Variables---------------*/ 
 	bool slow_mode; //是否低速模式 
 	bool shooting; //是否射击
+	vector<int> powers; //每股火力 
+	bool hit; //是否处于被弹状态(是否可决死) 
 	bool in_protect; //是否处于无敌 
+	int die_bomb_time; //决死时间 
 	
 	/*---------------Functions---------------*/
 	virtual void shoot(); //射击
 	virtual void bomb(); //自机符卡释放
+	void control(); //操控自机 
 
 public:
 	using Entity::Entity; 
